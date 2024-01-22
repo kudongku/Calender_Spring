@@ -179,17 +179,17 @@
       margin-left: 20px;
     }
 
-    .contents {
+    .content {
       padding: 0 23px;
       word-wrap: break-word;
       word-break: break-all;
     }
 
-    .contents div.edit {
+    .content div.edit {
       display: none;
     }
 
-    .contents textarea.te-edit {
+    .content textarea.te-edit {
       border-right: none;
       border-top: none;
       border-left: none;
@@ -246,8 +246,8 @@
       let password = $('#password').val();
       let date = $('#date').val();
 
-      // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
-      if (!isValidContents(title, content, writer, password, date)) {
+      // 2. 작성한 메모가 올바른지 content 함수를 통해 확인합니다.
+      if (!isValidContent(title, content, writer, password, date)) {
         return;
       }
 
@@ -268,7 +268,7 @@
     }
 
     // 사용자가 내용을 올바르게 입력하였는지 확인합니다.
-    function isValidContents(title, content, writer, password, date) {
+    function isValidContent(title, content, writer, password, date) {
       if (title === '') {
         alert('내용을 입력해주세요');
         return false;
@@ -331,21 +331,22 @@
             let id = message['id'];
             let date = message['date'];
             let writer = message['writer'];
+            let password = message['password'];
             let title = message['title'];
             let content = message['content'];
-            addHTML(id, title, content, writer, date);
+            addHTML(id, title, content, writer,password, date);
           }
         }
       })
     }
 
     // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
-    function addHTML(id, title, content, writer, date) {
+    function addHTML(id, title, content, writer, password, date) {
       // 1. HTML 태그를 만듭니다.
       let tempHtml = `<div class="card">
                 <!-- date/username 영역 -->
                 <div class="metadata">
-                    <div class="date">
+                    <div id="${id}-date" class="date">
                         ${date}
                     </div>
                     <div id="${id}-username" class="username">
@@ -354,15 +355,23 @@
                     <div id="${id}-title" class="title">
                         ${title}
                     </div>
+                    <div id="${id}-password" class="title">
+                        ${password}
+                    </div>
                 </div>
-                <!-- contents 조회/수정 영역-->
-                <div class="contents">
-                    <div id="${id}-contents" class="text">
+                <!--  content 조회/수정 영역-->
+                <div class="content">
+                    <div id="${id}-content" class="text">
                         ${content}
                     </div>
                     <div id="${id}-editarea" class="edit">
-                        <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                        <textarea id="${id}-titleArea" class="te-edit" name="" id="" cols="30" rows="1"></textarea>
+                        <textarea id="${id}-contentArea" class="te-edit" name="" id="" cols="30" rows="3"></textarea>
+                        <textarea id="${id}-writerArea" class="te-edit" name="" id="" cols="15" rows="1"></textarea>
+                        <textarea id="${id}-passwordArea" class="te-edit" name="" id="" cols="15" rows="1"></textarea>
+                        <textarea id="${id}-dateArea" class="te-edit" name="" id="" cols="30" rows="1"></textarea>
                     </div>
+
                 </div>
                 <!-- 버튼 영역-->
                 <div class="footer">
@@ -379,8 +388,16 @@
     // 숨길 버튼을 숨기고, 나타낼 버튼을 나타냅니다.
     function editPost(id) {
       showEdits(id);
-      let contents = $(`#${id}-contents`).text().trim();
-      $(`#${id}-textarea`).val(contents);
+      let date = $(`#${id}-date`).text().trim();
+      let writer = $(`#${id}-username`).text().trim();
+      let title = $(`#${id}-title`).text().trim();
+      let password = $(`#${id}-password`).text().trim();
+      let content = $(`#${id}-content`).text().trim();
+      $(`#${id}-titleArea`).val(title);
+      $(`#${id}-contentArea`).val(content);
+      $(`#${id}-writerArea`).val(writer);
+      $(`#${id}-passwordArea`).val(password);
+      $(`#${id}-dateArea`).val(date);
     }
 
     function showEdits(id) {
@@ -388,28 +405,32 @@
       $(`#${id}-submit`).show();
       $(`#${id}-delete`).show();
 
-      $(`#${id}-contents`).hide();
+      $(`#${id}-content`).hide();
       $(`#${id}-edit`).hide();
     }
 
     // 메모를 수정합니다.
     function submitEdit(id) {
-      // 1. 작성 대상 메모의 username과 contents 를 확인합니다.
-      let username = $(`#${id}-username`).text().trim();
-      let contents = $(`#${id}-textarea`).val().trim();
+      // 1. 작성 대상 메모의 username과 content 를 확인합니다.
+      let date = $(`#${id}-dateArea`).val();
+      let writer = $(`#${id}-writerArea`).val();
+      let title = $(`#${id}-titleArea`).val();
+      let password = $(`#${id}-passwordArea`).val();
+      let content = $(`#${id}-contentArea`).val();
 
-      // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
-      if (isValidContents(contents) === false) {
-        return;
-      }
+
+      // 2. 작성한 메모가 올바른지 content 함수를 통해 확인합니다.
+      // if (content(title, content, writer, password, date) === false) {
+      //   return;
+      // }
 
       // 3. 전달할 data JSON으로 만듭니다.
-      let data = {'username': username, 'contents': contents};
+      let data = {'writer': writer, 'content': content, 'password': password,'date': date, 'title': title};
 
       // 4. PUT /api/memos/{id} 에 data를 전달합니다.
       $.ajax({
         type: "PUT",
-        url: `/api/memos/${id}`,
+        url: `/calender/${id}`,
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function (response) {
@@ -476,8 +497,8 @@
           title
         </div>
       </div>
-      <!-- contents 조회/수정 영역-->
-      <div class="contents">
+      <!-- content 조회/수정 영역-->
+      <div class="content">
 
       </div>
       <!-- 버튼 영역-->

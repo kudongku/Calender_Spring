@@ -5,10 +5,7 @@ import com.sparta.calender.dto.CalenderResponseDto;
 import com.sparta.calender.entity.Calender;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/calender")
@@ -46,6 +43,28 @@ public class CalenderController {
                 .toList();
 
         return returnList;
+    }
+
+    @PutMapping("/{id}")
+    public Long updateCalender(@PathVariable Long id, @RequestBody CalenderRequestDto calenderRequestDto) {
+        System.out.println(calenderRequestDto.toString());
+
+        // 해당 id 가진 calender 존재하는가
+        if(calenderMap.containsKey(id)){
+
+            // 해당 일정 가져오기
+            Calender calender = calenderMap.get(id);
+
+            // 일정 수정하기
+            calender.update(calenderRequestDto);
+
+            System.out.println(calender.toString());
+
+            return id;
+
+        }else{
+            throw new InputMismatchException("선택한 일정은 존재하지 않습니다.");
+        }
     }
 
 

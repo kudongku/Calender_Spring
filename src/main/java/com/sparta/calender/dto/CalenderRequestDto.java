@@ -9,4 +9,15 @@ public class CalenderRequestDto {
     String writer;
     int password;
     String date;
+
+    @Override
+    public String toString() {
+        return "CalenderRequestDto{" +
+                "title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", writer='" + writer + '\'' +
+                ", password=" + password +
+                ", date='" + date + '\'' +
+                '}';
+    }
 }
