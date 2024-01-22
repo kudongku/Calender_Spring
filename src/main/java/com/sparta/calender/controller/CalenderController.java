@@ -3,13 +3,11 @@ package com.sparta.calender.controller;
 import com.sparta.calender.dto.CalenderRequestDto;
 import com.sparta.calender.dto.CalenderResponseDto;
 import com.sparta.calender.entity.Calender;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,9 +32,21 @@ public class CalenderController {
         // Entity -> responseDto
         CalenderResponseDto calenderResponseDto = new CalenderResponseDto(calender);
 
-        System.out.println(calenderResponseDto.toString());
-
         return calenderResponseDto;
     }
+
+    @GetMapping("/")
+    public List<CalenderResponseDto> readCalenders() {
+
+        // map to List
+        List<CalenderResponseDto> returnList = calenderMap
+                .values()
+                .stream()
+                .map(CalenderResponseDto::new) // calenderResponseDto calender 을 인자로 받는 생성자호출
+                .toList();
+
+        return returnList;
+    }
+
 
 }
