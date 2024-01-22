@@ -7,7 +7,9 @@
 2. 클래스 설계
    1. controller, service, repository 객체 생성
    2. dto, entity 객체 생성
-3. 기능 개발
+3. 기능 개발 브랜치 생성 (create)
+4. client html 생성
+5. 
 
 # Goal
 
