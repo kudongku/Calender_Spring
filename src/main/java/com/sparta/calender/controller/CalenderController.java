@@ -12,36 +12,32 @@ import java.util.List;
 @RequestMapping("/calender")
 public class CalenderController {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final CalenderService calenderService;
 
 
     public CalenderController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        calenderService = new CalenderService(jdbcTemplate);
     }
 
     @PostMapping("/")
     public CalenderResponseDto createCalender(@RequestBody CalenderRequestDto calenderRequestDto) {
-        CalenderService calenderService = new CalenderService(jdbcTemplate);
         return calenderService.createCalender(calenderRequestDto);
     }
 
     @GetMapping("/")
     public List<CalenderResponseDto> readCalenders() {
-        CalenderService calenderService = new CalenderService(jdbcTemplate);
         return calenderService.getCalenders();
     }
 
 
     @PutMapping("/{id}")
     public Long updateCalender(@PathVariable Long id, @RequestBody CalenderRequestDto calenderRequestDto) {
-        CalenderService calenderService = new CalenderService(jdbcTemplate);
         return calenderService.updateCalender(id, calenderRequestDto);
     }
 
 
     @DeleteMapping("/{id}")
     public Long deleteCalender(@PathVariable Long id) {
-        CalenderService calenderService = new CalenderService(jdbcTemplate);
         return calenderService.deleteCalender(id);
     }
 

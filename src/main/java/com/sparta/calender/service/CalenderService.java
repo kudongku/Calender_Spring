@@ -10,11 +10,11 @@ import java.util.InputMismatchException;
 import java.util.List;
 
 public class CalenderService {
+    private final CalenderRepository calenderRepository;
 
-    private final JdbcTemplate jdbcTemplate;
 
     public CalenderService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        calenderRepository = new CalenderRepository(jdbcTemplate);
     }
 
 
@@ -23,7 +23,6 @@ public class CalenderService {
         Calender calender = new Calender(calenderRequestDto);
 
         // DB 저장
-        CalenderRepository calenderRepository = new CalenderRepository(jdbcTemplate);
         Calender savedCalender = calenderRepository.save(calender);
 
         // Entity -> responseDto
@@ -31,12 +30,10 @@ public class CalenderService {
     }
 
     public List<CalenderResponseDto> getCalenders() {
-        CalenderRepository calenderRepository = new CalenderRepository(jdbcTemplate);
         return calenderRepository.findAll();
     }
 
     public Long updateCalender(Long id, CalenderRequestDto calenderRequestDto) {
-        CalenderRepository calenderRepository = new CalenderRepository(jdbcTemplate);
         // 해당 메모가 DB에 존재하는지 확인
         Calender calender = calenderRepository.findById(id);
 
@@ -49,7 +46,6 @@ public class CalenderService {
     }
 
     public Long deleteCalender(Long id) {
-        CalenderRepository calenderRepository = new CalenderRepository(jdbcTemplate);
         // 해당 메모가 DB에 존재하는지 확인
         Calender calender = calenderRepository.findById(id);
 
