@@ -5,7 +5,6 @@ import com.sparta.calender.dto.CalenderResponseDto;
 import com.sparta.calender.entity.Calender;
 import com.sparta.calender.repository.CalenderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.InputMismatchException;
