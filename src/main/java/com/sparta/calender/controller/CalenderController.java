@@ -47,10 +47,9 @@ public class CalenderController {
 
     @PutMapping("/{id}")
     public Long updateCalender(@PathVariable Long id, @RequestBody CalenderRequestDto calenderRequestDto) {
-        System.out.println(calenderRequestDto.toString());
 
         // 해당 id 가진 calender 존재하는가
-        if(calenderMap.containsKey(id)){
+        if (calenderMap.containsKey(id)) {
 
             // 해당 일정 가져오기
             Calender calender = calenderMap.get(id);
@@ -58,11 +57,25 @@ public class CalenderController {
             // 일정 수정하기
             calender.update(calenderRequestDto);
 
-            System.out.println(calender.toString());
-
             return id;
 
-        }else{
+        } else {
+            throw new InputMismatchException("선택한 일정은 존재하지 않습니다.");
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
+    public Long deleteCalender(@PathVariable Long id) {
+
+        // 해당 id 가진 calender 존재하는가
+        if (calenderMap.containsKey(id)) {
+
+            // 해당 일정 삭제하기
+            calenderMap.remove(id);
+            return id;
+
+        } else {
             throw new InputMismatchException("선택한 일정은 존재하지 않습니다.");
         }
     }
