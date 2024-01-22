@@ -47,7 +47,6 @@ public class CalenderController {
 
     @PutMapping("/{id}")
     public Long updateCalender(@PathVariable Long id, @RequestBody CalenderRequestDto calenderRequestDto) {
-        System.out.println(calenderRequestDto.toString());
 
         // 해당 id 가진 calender 존재하는가
         if(calenderMap.containsKey(id)){
@@ -57,8 +56,6 @@ public class CalenderController {
 
             // 일정 수정하기
             calender.update(calenderRequestDto);
-
-            System.out.println(calender.toString());
 
             return id;
 
