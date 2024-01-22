@@ -7,10 +7,10 @@
 2. 클래스 설계
    1. controller, service, repository 객체 생성
    2. dto, entity 객체 생성
-3. feat/postCalender 브랜치 생성
-4. client html 생성
-5. create 기능 구현
-6. feat/getCalender 브랜치 생성
+3. feat/기능명 브랜치 생성
+4. 기능 구현
+5. pull request, merge, pull origin main
+
 
 # Goal
 
