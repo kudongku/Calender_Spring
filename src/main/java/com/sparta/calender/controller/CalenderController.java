@@ -3,15 +3,27 @@ package com.sparta.calender.controller;
 import com.sparta.calender.dto.CalenderRequestDto;
 import com.sparta.calender.dto.CalenderResponseDto;
 import com.sparta.calender.entity.Calender;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 @RestController
 @RequestMapping("/calender")
 public class CalenderController {
 
-    private final Map<Long, Calender> calenderMap = new HashMap<>();
+    private final JdbcTemplate jdbcTemplate;
+
+    public CalenderController(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @PostMapping("/")
     public CalenderResponseDto createCalender(@RequestBody CalenderRequestDto calenderRequestDto) {
@@ -19,12 +31,26 @@ public class CalenderController {
         // calenderRequestDto -> calenderEntity 로 변환
         Calender calender = new Calender(calenderRequestDto);
 
-        // calender MaxId 만들어주기
-        long maxId = !calenderMap.isEmpty() ? Collections.max(calenderMap.keySet()) + 1 : 1;
-        calender.setId(maxId);
+        // DB 저장
+        KeyHolder keyHolder = new GeneratedKeyHolder(); // 기본 키를 반환받기 위한 객체
 
-        //DB 저장
-        calenderMap.put(calender.getId(), calender);
+        String sql = "INSERT INTO calender (title, content, writer, password, date) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update( con -> {
+                    PreparedStatement preparedStatement = con.prepareStatement(sql,
+                            Statement.RETURN_GENERATED_KEYS);
+
+                    preparedStatement.setString(1, calender.getTitle());
+                    preparedStatement.setString(2, calender.getContent());
+                    preparedStatement.setString(3, calender.getWriter());
+                    preparedStatement.setString(4, String.valueOf(calender.getPassword()));
+                    preparedStatement.setString(5, calender.getDate());
+                    return preparedStatement;
+                },
+                keyHolder);
+
+        // DB Insert 후 받아온 기본키 확인
+        long id = keyHolder.getKey().longValue();
+        calender.setId(id);
 
         // Entity -> responseDto
         CalenderResponseDto calenderResponseDto = new CalenderResponseDto(calender);
@@ -34,31 +60,37 @@ public class CalenderController {
 
     @GetMapping("/")
     public List<CalenderResponseDto> readCalenders() {
+        // DB 조회
+        String sql = "SELECT * FROM calender";
 
-        // map to List
-        List<CalenderResponseDto> returnList = calenderMap
-                .values()
-                .stream()
-                .map(CalenderResponseDto::new) // calenderResponseDto calender 을 인자로 받는 생성자호출
-                .toList();
-
-        return returnList;
+        return jdbcTemplate.query(sql, new RowMapper<CalenderResponseDto>() {
+            @Override
+            public CalenderResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                // SQL 의 결과로 받아온 Memo 데이터들을 MemoResponseDto 타입으로 변환해줄 메서드
+                Long id = rs.getLong("id");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                String writer = rs.getString("writer");
+                String password = rs.getString("password");
+                String date = rs.getString("date");
+                return new CalenderResponseDto(id, title, content, writer, password, date);
+            }
+        });
     }
+
 
     @PutMapping("/{id}")
     public Long updateCalender(@PathVariable Long id, @RequestBody CalenderRequestDto calenderRequestDto) {
 
-        // 해당 id 가진 calender 존재하는가
-        if (calenderMap.containsKey(id)) {
+        // 해당 메모가 DB에 존재하는지 확인
+        Calender calender = findById(id);
 
-            // 해당 일정 가져오기
-            Calender calender = calenderMap.get(id);
-
-            // 일정 수정하기
-            calender.update(calenderRequestDto);
+        if(calender != null) {
+            // memo 내용 수정
+            String sql = "UPDATE calender SET title = ?, content = ?, writer = ?, password = ?, date = ? WHERE id = ?";
+            jdbcTemplate.update(sql, calenderRequestDto.getTitle(), calenderRequestDto.getContent(), calenderRequestDto.getWriter(), calenderRequestDto.getPassword(),calenderRequestDto.getDate(),id);
 
             return id;
-
         } else {
             throw new InputMismatchException("선택한 일정은 존재하지 않습니다.");
         }
@@ -67,18 +99,36 @@ public class CalenderController {
 
     @DeleteMapping("/{id}")
     public Long deleteCalender(@PathVariable Long id) {
+        // 해당 메모가 DB에 존재하는지 확인
+        Calender calender = findById(id);
 
-        // 해당 id 가진 calender 존재하는가
-        if (calenderMap.containsKey(id)) {
+        if(calender != null) {
+            // memo 내용 수정
+            String sql = "DELETE FROM calender WHERE id = ?";
+            jdbcTemplate.update(sql, id);
 
-            // 해당 일정 삭제하기
-            calenderMap.remove(id);
             return id;
-
         } else {
             throw new InputMismatchException("선택한 일정은 존재하지 않습니다.");
         }
     }
 
+    private Calender findById(Long id) {
+        // DB 조회
+        String sql = "SELECT * FROM calender WHERE id = ?";
 
+        return jdbcTemplate.query(sql, resultSet -> {
+            if(resultSet.next()) {
+                Calender calender = new Calender();
+                calender.setTitle(resultSet.getString("title"));
+                calender.setContent(resultSet.getString("content"));
+                calender.setWriter(resultSet.getString("writer"));
+                calender.setPassword(Integer.parseInt(resultSet.getString("password")));
+                calender.setDate(resultSet.getString("date"));
+                return calender;
+            } else {
+                return null;
+            }
+        }, id);
+    }
 }
