@@ -27,9 +27,7 @@ public class CalenderService {
         Calender savedCalender = calenderRepository.save(calender);
 
         // Entity -> responseDto
-        CalenderResponseDto calenderResponseDto = new CalenderResponseDto(savedCalender);
-
-        return calenderResponseDto;
+        return new CalenderResponseDto(savedCalender);
     }
 
     public List<CalenderResponseDto> getCalenders() {
