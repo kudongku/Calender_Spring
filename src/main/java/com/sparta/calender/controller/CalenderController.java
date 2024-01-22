@@ -15,8 +15,8 @@ public class CalenderController {
     private final CalenderService calenderService;
 
 
-    public CalenderController(JdbcTemplate jdbcTemplate) {
-        calenderService = new CalenderService(jdbcTemplate);
+    public CalenderController(CalenderService calenderService) {
+        this.calenderService = calenderService;
     }
 
     @PostMapping("/")

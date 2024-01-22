@@ -13,8 +13,8 @@ public class CalenderService {
     private final CalenderRepository calenderRepository;
 
 
-    public CalenderService(JdbcTemplate jdbcTemplate) {
-        calenderRepository = new CalenderRepository(jdbcTemplate);
+    public CalenderService(CalenderRepository calenderRepository) {
+        this.calenderRepository = calenderRepository;
     }
 
 
