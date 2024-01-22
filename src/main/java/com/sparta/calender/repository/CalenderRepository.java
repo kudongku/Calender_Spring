@@ -3,10 +3,13 @@ package com.sparta.calender.repository;
 import com.sparta.calender.dto.CalenderRequestDto;
 import com.sparta.calender.dto.CalenderResponseDto;
 import com.sparta.calender.entity.Calender;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,12 +17,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public class CalenderRepository {
-    private final JdbcTemplate jdbcTemplate;
 
-    public CalenderRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+@Repository
+@RequiredArgsConstructor
+public class CalenderRepository {
+
+    private final JdbcTemplate jdbcTemplate;
 
     public Calender save(Calender calender) {
 

@@ -4,19 +4,19 @@ import com.sparta.calender.dto.CalenderRequestDto;
 import com.sparta.calender.dto.CalenderResponseDto;
 import com.sparta.calender.entity.Calender;
 import com.sparta.calender.repository.CalenderRepository;
-import org.springframework.jdbc.core.JdbcTemplate;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.InputMismatchException;
 import java.util.List;
 
+
+@Service
+@RequiredArgsConstructor
 public class CalenderService {
+
     private final CalenderRepository calenderRepository;
-
-
-    public CalenderService(CalenderRepository calenderRepository) {
-        this.calenderRepository = calenderRepository;
-    }
-
 
     public CalenderResponseDto createCalender(CalenderRequestDto calenderRequestDto) {
         // calenderRequestDto -> calenderEntity 로 변환
