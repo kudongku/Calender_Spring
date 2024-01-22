@@ -21,6 +21,15 @@ public class CalenderResponseDto {
         this.date = calender.getDate();
     }
 
+    public CalenderResponseDto(Long id, String title, String content, String writer, String password, String date) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+        this.password = Integer.parseInt(password);
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "CalenderResponseDto{" +
