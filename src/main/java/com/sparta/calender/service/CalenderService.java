@@ -3,15 +3,9 @@ package com.sparta.calender.service;
 import com.sparta.calender.dto.CalenderRequestDto;
 import com.sparta.calender.dto.CalenderResponseDto;
 import com.sparta.calender.entity.Calender;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+import com.sparta.calender.repository.CalenderRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -29,60 +23,27 @@ public class CalenderService {
         Calender calender = new Calender(calenderRequestDto);
 
         // DB 저장
-        KeyHolder keyHolder = new GeneratedKeyHolder(); // 기본 키를 반환받기 위한 객체
-
-        String sql = "INSERT INTO calender (title, content, writer, password, date) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update( con -> {
-                    PreparedStatement preparedStatement = con.prepareStatement(sql,
-                            Statement.RETURN_GENERATED_KEYS);
-
-                    preparedStatement.setString(1, calender.getTitle());
-                    preparedStatement.setString(2, calender.getContent());
-                    preparedStatement.setString(3, calender.getWriter());
-                    preparedStatement.setString(4, String.valueOf(calender.getPassword()));
-                    preparedStatement.setString(5, calender.getDate());
-                    return preparedStatement;
-                },
-                keyHolder);
-
-        // DB Insert 후 받아온 기본키 확인
-        long id = keyHolder.getKey().longValue();
-        calender.setId(id);
+        CalenderRepository calenderRepository = new CalenderRepository(jdbcTemplate);
+        Calender savedCalender = calenderRepository.save(calender);
 
         // Entity -> responseDto
-        CalenderResponseDto calenderResponseDto = new CalenderResponseDto(calender);
+        CalenderResponseDto calenderResponseDto = new CalenderResponseDto(savedCalender);
 
         return calenderResponseDto;
     }
 
     public List<CalenderResponseDto> getCalenders() {
-        // DB 조회
-        String sql = "SELECT * FROM calender";
-
-        return jdbcTemplate.query(sql, new RowMapper<CalenderResponseDto>() {
-            @Override
-            public CalenderResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-                // SQL 의 결과로 받아온 Memo 데이터들을 MemoResponseDto 타입으로 변환해줄 메서드
-                Long id = rs.getLong("id");
-                String title = rs.getString("title");
-                String content = rs.getString("content");
-                String writer = rs.getString("writer");
-                String password = rs.getString("password");
-                String date = rs.getString("date");
-                return new CalenderResponseDto(id, title, content, writer, password, date);
-            }
-        });
+        CalenderRepository calenderRepository = new CalenderRepository(jdbcTemplate);
+        return calenderRepository.findAll();
     }
 
     public Long updateCalender(Long id, CalenderRequestDto calenderRequestDto) {
+        CalenderRepository calenderRepository = new CalenderRepository(jdbcTemplate);
         // 해당 메모가 DB에 존재하는지 확인
-        Calender calender = findById(id);
+        Calender calender = calenderRepository.findById(id);
 
-        if(calender != null) {
-            // memo 내용 수정
-            String sql = "UPDATE calender SET title = ?, content = ?, writer = ?, password = ?, date = ? WHERE id = ?";
-            jdbcTemplate.update(sql, calenderRequestDto.getTitle(), calenderRequestDto.getContent(), calenderRequestDto.getWriter(), calenderRequestDto.getPassword(),calenderRequestDto.getDate(),id);
-
+        if (calender != null) {
+            calenderRepository.update(id, calenderRequestDto);
             return id;
         } else {
             throw new InputMismatchException("선택한 일정은 존재하지 않습니다.");
@@ -90,36 +51,17 @@ public class CalenderService {
     }
 
     public Long deleteCalender(Long id) {
+        CalenderRepository calenderRepository = new CalenderRepository(jdbcTemplate);
         // 해당 메모가 DB에 존재하는지 확인
-        Calender calender = findById(id);
+        Calender calender = calenderRepository.findById(id);
 
-        if(calender != null) {
-            // memo 내용 수정
-            String sql = "DELETE FROM calender WHERE id = ?";
-            jdbcTemplate.update(sql, id);
-
+        if (calender != null) {
+            calenderRepository.remove(id);
             return id;
         } else {
             throw new InputMismatchException("선택한 일정은 존재하지 않습니다.");
         }
     }
 
-    private Calender findById(Long id) {
-        // DB 조회
-        String sql = "SELECT * FROM calender WHERE id = ?";
 
-        return jdbcTemplate.query(sql, resultSet -> {
-            if(resultSet.next()) {
-                Calender calender = new Calender();
-                calender.setTitle(resultSet.getString("title"));
-                calender.setContent(resultSet.getString("content"));
-                calender.setWriter(resultSet.getString("writer"));
-                calender.setPassword(Integer.parseInt(resultSet.getString("password")));
-                calender.setDate(resultSet.getString("date"));
-                return calender;
-            } else {
-                return null;
-            }
-        }, id);
-    }
 }
