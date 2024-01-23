@@ -16,57 +16,9 @@
             background-color: #5353ff;
         }
 
-        .wrap {
-            width: 600px;
-            margin: 10px auto;
-        }
-
-        .area-write {
-            padding: 20px;
-            margin: 10px auto;
-
-            border-radius: 10px;
-
-            background-color: #7a7af5;
-            position: relative;
-            width: 538px;
-        }
-        #detail-box{
-            padding: 20px;
-            margin: 0 auto;
-
-            border-radius: 10px;
-
-            background-color: #7a7af5;
-            position: relative;
-            width: 538px;
-        }
-
-        .area-read {
-            padding: 20px;
-            margin: 0 auto;
-
-            border-radius: 10px;
-
-            background-color: #7a7af5;
-            position: relative;
-            width: 538px;
-        }
-
-        .area-write img {
-            cursor: pointer;
-            position: absolute;
-            width: 22.2px;
-            height: 18.7px;
-            bottom: 15px;
-            right: 17px;
-        }
-
-        .header {
-            margin-top: 50px;
-        }
 
         .header h2 {
+            margin-top: 50px;
             height: 33px;
             font-size: 80px;
             font-weight: 500;
@@ -76,7 +28,18 @@
             color: #ffffff;
         }
 
-        textarea.field#title {
+
+        .area-write, .area-details, .area-read{
+            padding: 20px;
+            margin: 10px auto;
+            border-radius: 10px;
+            background-color: #7a7af5;
+            position: relative;
+            width: 538px;
+        }
+
+
+        textarea.field#title, textarea.field#writer, textarea.field#password {
             width: 502px !important;
             height: 15px;
             border-radius: 5px;
@@ -85,7 +48,6 @@
             padding: 18px;
             resize: none;
         }
-
         textarea.field#content {
             width: 502px !important;
             height: 60px;
@@ -95,28 +57,7 @@
             padding: 18px;
             resize: none;
         }
-
-        textarea.field#writer {
-            width: 502px !important;
-            height: 15px;
-            border-radius: 5px;
-            background-color: #ffffff;
-            border: none;
-            padding: 18px;
-            resize: none;
-        }
-
-        textarea.field#password {
-            width: 502px !important;
-            height: 15px;
-            border-radius: 5px;
-            background-color: #ffffff;
-            border: none;
-            padding: 18px;
-            resize: none;
-        }
-
-        #date {
+        input#date {
             width: 502px !important;
             height: 15px;
             border-radius: 5px;
@@ -126,12 +67,11 @@
             resize: none;
             margin-bottom: 30px;
         }
-
         textarea.field::placeholder {
             width: 216px;
-            height: 16px;
+            height: 15px;
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: normal;
             font-stretch: normal;
             font-style: normal;
@@ -140,14 +80,41 @@
             text-align: left;
             color: #868e96;
         }
+        .area-write img {
+            cursor: pointer;
+            position: absolute;
+            width: 22.2px;
+            height: 18.7px;
+            bottom: 15px;
+            right: 17px;
+        }
 
+
+        #detail-box{
+            padding-top: 20px;
+        }
+        #detail-box .card{
+            padding-top: 20px;
+        }
+        .area-details.card.content {
+            background-color: green;
+            margin:0 !important;
+            padding:0 23px;
+        }
+
+        #cards-box {
+            margin-top: 12px;
+        }
         .card {
             width: 538px;
             border-radius: 5px;
             background-color: #ffffff;
-            margin-bottom: 12px;
+            cursor: pointer;
+            padding-bottom: 10px;
         }
-
+        .card:hover{
+            background-color: #d5d5d5;
+        }
         .card .metadata {
             position: relative;
             display: flex;
@@ -163,13 +130,11 @@
             height: 14px;
             padding: 10px 23px;
         }
-
-        .card .metadata .username {
+        .card .metadata .username, .card .metadata .title  {
             margin-left: 20px;
         }
-
-        .card .metadata .title {
-            margin-left: 20px;
+        .card .content .title{
+            padding-bottom: 10px;
         }
 
         .content {
@@ -196,7 +161,6 @@
             position: relative;
             height: 40px;
         }
-
         .footer img.icon-start-edit {
             cursor: pointer;
             position: absolute;
@@ -224,24 +188,7 @@
             width: 14px;
             height: 18px;
         }
-        .card .content .title{
-            padding-bottom: 10px;
-        }
-        .card{
-            cursor: pointer;
-            padding-bottom: 10px;
-        }
-        .card:hover{
-            background-color: #bbbbbb;
-        }
 
-        #cards-box {
-            margin-top: 12px;
-        }
-        #detail-box .card .date{
-            margin-top: 12px;
-            padding-top: 10px;
-        }
     </style>
     <script>
         function showDetails(id) {
@@ -263,44 +210,44 @@
         function showDetailHTML(id, title, content, writer, date) {
             // 1. HTML 태그를 만듭니다.
             let tempHtml = `<div class="card">
-            <div class="content">
+                <div class="content">
 
-                <div id="${id}-date" class="date">
-                    ${date}
+                    <div id="${id}-date" class="string">
+                        ${date}
+                    </div>
+                    <br>
+                    <div id="${id}-username" class="string">
+                        ${writer}
+                    </div>
+                    <br>
+                    <div id="${id}-title" class="string">
+                        ${title}
+                    </div>
+                    <br>
+                    <div id="${id}-content" class="string">
+                        ${content}
+                    </div>
+
+                    <div id="${id}-Deletearea" class="edit">
+                        <textarea id="${id}-passwordAreaForDelete" class="te-edit" name="" id="122" cols="30" rows="1"></textarea>
+                        <button onclick="deleteOne('${id}')">삭제하기</button>
+                    </div>
+
+                    <div id="${id}-editarea" class="edit">
+                        <textarea id="${id}-titleArea" class="te-edit" name="" id="22" cols="30" rows="1"></textarea>
+                        <textarea id="${id}-contentArea" class="te-edit" name="" id="32" cols="30" rows="3"></textarea>
+                        <textarea id="${id}-writerArea" class="te-edit" name="" id="2" cols="15" rows="1"></textarea>
+                        <textarea id="${id}-passwordArea" class="te-edit" name="" id="4" cols="15" rows="1"></textarea>
+                        <textarea id="${id}-dateArea" class="te-edit" name="" id="" cols="30" rows="1"></textarea>
+                    </div>
                 </div>
 
-                <div id="${id}-username" class="username">
-                    ${writer}
+                <!-- 버튼 영역-->
+                <div class="footer">
+                    <img id="${id}-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('${id}')">
+                    <img id="${id}-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deletePost('${id}')">
+                    <img id="${id}-submit" class="icon-end-edit" src="images/send.png" alt="" onclick="submitEdit('${id}')">
                 </div>
-
-                <div id="${id}-title" class="title">
-                    ${title}
-                </div>
-
-                <div id="${id}-content" class="content">
-                    ${content}
-                </div>
-
-                <div id="${id}-Deletearea" class="edit">
-                    <textarea id="${id}-passwordAreaForDelete" class="te-edit" name="" id="" cols="30" rows="1"></textarea>
-                    <button onclick="deleteOne('${id}')">삭제하기</button>
-                </div>
-
-                <div id="${id}-editarea" class="edit">
-                    <textarea id="${id}-titleArea" class="te-edit" name="" id="" cols="30" rows="1"></textarea>
-                    <textarea id="${id}-contentArea" class="te-edit" name="" id="" cols="30" rows="3"></textarea>
-                    <textarea id="${id}-writerArea" class="te-edit" name="" id="" cols="15" rows="1"></textarea>
-                    <textarea id="${id}-passwordArea" class="te-edit" name="" id="" cols="15" rows="1"></textarea>
-                    <textarea id="${id}-dateArea" class="te-edit" name="" id="" cols="30" rows="1"></textarea>
-                </div>
-            </div>
-
-            <!-- 버튼 영역-->
-            <div class="footer">
-                <img id="${id}-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('${id}')">
-                <img id="${id}-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deletePost('${id}')">
-                <img id="${id}-submit" class="icon-end-edit" src="images/send.png" alt="" onclick="submitEdit('${id}')">
-            </div>
             </div>`;
 
             // 2. #cards-box 에 HTML을 붙인다.
@@ -372,7 +319,7 @@
         // 메모를 불러와서 보여줍니다.
         function getMessages() {
             // 1. 기존 메모 내용을 지웁니다.
-            $('#cards-box').empty();
+            // $('#cards-box').empty();
             // 2. 메모 목록을 불러와서 HTML로 붙입니다.
             $.ajax({
                 type: 'GET',
@@ -396,22 +343,22 @@
         function addHTML(id, title, content, writer, date) {
             // 1. HTML 태그를 만듭니다.
             let tempHtml = `<div class="card" onclick="showDetails('${id}')">
-            <!-- date/username 영역 -->
-            <div class="metadata">
-                <div id="${id}-date" class="date">
-                    ${date}
+                <!-- date/username 영역 -->
+                <div class="metadata">
+                    <div id="${id}-da2te" class="date">
+                        ${date}
+                    </div>
+                    <div id="${id}-user2name" class="username">
+                        ${writer}
+                    </div>
                 </div>
-                <div id="${id}-username" class="username">
-                    ${writer}
-                </div>
-            </div>
 
-            <div class="content">
-                <div id="${id}-title" class="title">
-                    ${title}
+                <div class="content">
+                    <div id="${id}-ti2tle" class="title">
+                        ${title}
+                    </div>
                 </div>
-            </div>
-        </div>`;
+            </div>`;
             // 2. #cards-box 에 HTML을 붙인다.
             $('#cards-box').append(tempHtml);
         }
@@ -505,10 +452,11 @@
 <body>
     <div class="wrap">
 
-        <div class="header"><h2>CALENDER</h2></div>
+        <div class="header">
+            <h2>CALENDER</h2>
+        </div>
 
         <div class="area-write">
-
             <textarea class="field" placeholder="일정 제목을 입력해주세요" name="title" id="title" cols="10"
                       rows="1"></textarea>
             <textarea class="field" placeholder="일정 내용을 입력해주세요" name="content" id="content" cols="30"
@@ -532,6 +480,7 @@
         <div id="cards-box" class="area-read">
 
         </div>
+
     </div>
 </body>
 
