@@ -2,6 +2,7 @@ package com.sparta.calender.controller;
 
 import com.sparta.calender.dto.CalenderRequestDto;
 import com.sparta.calender.dto.CalenderResponseDto;
+import com.sparta.calender.dto.PasswordDto;
 import com.sparta.calender.service.CalenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,19 +17,17 @@ public class CalenderController {
     private final CalenderService calenderService;
 
     @PostMapping("/")
-    public CalenderResponseDto createCalender(@RequestBody CalenderRequestDto calenderRequestDto) {
-        return calenderService.createCalender(calenderRequestDto);
+    public void createCalender(@RequestBody CalenderRequestDto calenderRequestDto) {
+        calenderService.createCalender(calenderRequestDto);
     }
 
     @GetMapping("/")
     public List<CalenderResponseDto> readCalenders() {
-        System.out.println("!");
         return calenderService.getCalenders();
     }
 
     @GetMapping("/{id}")
     public CalenderResponseDto showCalenderDetails(@PathVariable Long id) {
-        System.out.println("컨트롤러 진입 성공, id : "+id);
         return calenderService.showCalenderDetails(id);
     }
 
@@ -39,10 +38,9 @@ public class CalenderController {
     }
 
 
-    @DeleteMapping("/{id}/{password}")
-    public boolean deleteCalender(@PathVariable Long id,@PathVariable String password) {
-        System.out.println("컨트롤러 진입 성공, password : "+password);
-        return calenderService.deleteCalender(id, password);
+    @DeleteMapping("/{id}")
+    public boolean deleteCalender(@PathVariable Long id, @RequestBody PasswordDto passwordDto) {
+        return calenderService.deleteCalender(id, passwordDto);
     }
 
 }
