@@ -3,6 +3,7 @@ package com.sparta.calender.repository;
 import com.sparta.calender.dto.CalenderRequestDto;
 import com.sparta.calender.dto.CalenderResponseDto;
 import com.sparta.calender.entity.Calender;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -93,7 +95,7 @@ public class CalenderRepository {
                 calender.setTitle(resultSet.getString("title"));
                 calender.setContent(resultSet.getString("content"));
                 calender.setWriter(resultSet.getString("writer"));
-                calender.setPassword(Integer.parseInt(resultSet.getString("password")));
+                calender.setPassword(resultSet.getString("password"));
                 calender.setDate(resultSet.getString("date"));
                 return calender;
             } else {

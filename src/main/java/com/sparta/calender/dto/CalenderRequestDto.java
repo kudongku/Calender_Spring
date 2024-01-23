@@ -7,7 +7,7 @@ public class CalenderRequestDto {
     String title;
     String content;
     String writer;
-    int password;
+    String password;
     String date;
 
     @Override

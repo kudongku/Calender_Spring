@@ -9,7 +9,7 @@ public class CalenderResponseDto {
     String title;
     String content;
     String writer;
-    int password;
+    String password;
     String date;
 
     public CalenderResponseDto(Calender calender) {
@@ -26,7 +26,7 @@ public class CalenderResponseDto {
         this.title = title;
         this.content = content;
         this.writer = writer;
-        this.password = Integer.parseInt(password);
+        this.password = password;
         this.date = date;
     }
 
