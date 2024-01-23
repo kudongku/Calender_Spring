@@ -4,20 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class CalenderRequestDto {
-    String title;
-    String content;
-    String writer;
-    int password;
-    String date;
-
-    @Override
-    public String toString() {
-        return "CalenderRequestDto{" +
-                "title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", writer='" + writer + '\'' +
-                ", password=" + password +
-                ", date='" + date + '\'' +
-                '}';
-    }
+    private String title;
+    private String content;
+    private String writer;
+    private String password;
+    private String date;
 }
