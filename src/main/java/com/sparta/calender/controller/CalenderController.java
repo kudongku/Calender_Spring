@@ -40,7 +40,7 @@ public class CalenderController {
 
 
     @DeleteMapping("/{id}/{password}")
-    public boolean deleteCalender(@PathVariable Long id, String password) {
+    public boolean deleteCalender(@PathVariable Long id,@PathVariable String password) {
         System.out.println("컨트롤러 진입 성공, password : "+password);
         return calenderService.deleteCalender(id, password);
     }
