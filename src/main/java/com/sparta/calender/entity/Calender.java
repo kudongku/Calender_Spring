@@ -12,7 +12,7 @@ import java.util.Map;
 @Setter
 @Table(name = "calender") // 매핑할 테이블의 이름을 지정
 @NoArgsConstructor
-public class Calender {
+public class Calender extends Timestamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
