@@ -5,7 +5,7 @@
 ## 진행과정
 ### 1. Spring boot 프로젝트 생성
 - lombok, spring web, thymeleaf 의존성 주입
-![img_4.png](img_4.png)
+![img_4.png](readmeDirectory/img_4.png)
 ### 2. git work flow 정하기
 > https://velog.io/@kudongku/GIT-git-work-flow
 - git init commit
@@ -14,18 +14,18 @@
 ### 3. 클래스 설계하기
 1. controller, service, repository 객체 생성
 2. dto, entity 객체 생성
-![img_5.png](img_5.png)
+![img_5.png](readmeDirectory/img_5.png)
 ### 4. CRUD 기능구현
 1. feat/CRUD 브랜치 생성
 2. 기능 구현
 3. pull request, merge, pull origin main
 ### 5. JDBC로 mySQL과 연결
-![img_6.png](img_6.png)
+![img_6.png](readmeDirectory/img_6.png)
 ### 6. 3 Layer Architecture 적용
-![img_5.png](img_5.png)
+![img_5.png](readmeDirectory/img_5.png)
 ### 7. IOC container 과 bean 적용
 ### 8. JPA 적용
-![img_7.png](img_7.png)
+![img_7.png](readmeDirectory/img_7.png)
 ### 9. JPA Auditing 적용
 ### 10. Refactoring
 1. responseDTO에 비밀번호 안보이게
@@ -37,21 +37,21 @@
 ## 1. 깃 워크 플로우 구현하기
 
 1. main 은 배포용, dev 은 배포전 메인, feat/기능 브랜치는 기능 단위로 브랜치 만들기
-   - ![img_8.png](img_8.png)
+   - ![img_8.png](readmeDirectory/img_8.png)
 2. 메소드 단위로 커밋하고, 커밋 메세지는 커밋 컨벤션에 맞추어서
-    - ![img_9.png](img_9.png)
+    - ![img_9.png](readmeDirectory/img_9.png)
 ## 2. 설계
 
 1. Use Case Diagram 작성하기
 
-![img_10.png](img_10.png)
+![img_10.png](readmeDirectory/img_10.png)
 
 2. API 명세서 작성하기
 
-![img_3.png](img_3.png)
+![img_3.png](readmeDirectory/img_3.png)
 
 3. ERD 작성하기
-![img_11.png](img_11.png)
+![img_11.png](readmeDirectory/img_11.png)
 ## 3. 스프링부트 기반 기능 구현하기
 
 1. 스프링부트 기반 프로그램 구현
