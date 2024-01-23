@@ -22,6 +22,7 @@ public class CalenderController {
 
     @GetMapping("/")
     public List<CalenderResponseDto> readCalenders() {
+        System.out.println("!");
         return calenderService.getCalenders();
     }
 

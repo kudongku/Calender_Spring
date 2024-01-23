@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>캘린더</title>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -450,7 +450,7 @@
 
             // 2. 작성한 메모가 올바른지 content 함수를 통해 확인합니다.
             if (!isValidContent(title, content, writer, password, date)){
-              return;
+                return;
             }
 
             // 3. 전달할 data JSON으로 만듭니다.
@@ -503,35 +503,36 @@
 </head>
 
 <body>
-<div class="wrap">
+    <div class="wrap">
 
-    <div class="header"><h2>CALENDER</h2></div>
+        <div class="header"><h2>CALENDER</h2></div>
 
-    <div class="area-write">
-        <textarea class="field" placeholder="일정 제목을 입력해주세요" name="title" id="title" cols="10"
-                  rows="1"></textarea>
-        <textarea class="field" placeholder="일정 내용을 입력해주세요" name="content" id="content" cols="30"
-                  rows="1"></textarea>
-        <textarea class="field" placeholder="담당자 성함을 입력해주세요" name="writer" id="writer" cols="30"
-                  rows="1"></textarea>
-        <textarea class="field" placeholder="비밀번호를 입력해주세요" name="password" id="password" cols="30"
-                  rows="1"></textarea>
-        <input type="date"
-               id="date"
-               max="2030-12-31"
-               min="2020-01-01"
-               value="2024-01-22">
-        <img src="images/send.png" alt="" onclick="writePost()">
+        <div class="area-write">
+
+            <textarea class="field" placeholder="일정 제목을 입력해주세요" name="title" id="title" cols="10"
+                      rows="1"></textarea>
+            <textarea class="field" placeholder="일정 내용을 입력해주세요" name="content" id="content" cols="30"
+                      rows="1"></textarea>
+            <textarea class="field" placeholder="담당자 성함을 입력해주세요" name="writer" id="writer" cols="30"
+                      rows="1"></textarea>
+            <textarea class="field" placeholder="비밀번호를 입력해주세요" name="password" id="password" cols="30"
+                      rows="1"></textarea>
+            <input type="date"
+                   id="date"
+                   max="2030-12-31"
+                   min="2020-01-01"
+                   value="2024-01-22">
+            <img src="images/send.png" alt="" onclick="writePost()">
+        </div>
+
+        <div id="detail-box" class="area-details">
+
+        </div>
+
+        <div id="cards-box" class="area-read">
+
+        </div>
     </div>
-
-    <div id="detail-box" class="area-details">
-
-    </div>
-
-    <div id="cards-box" class="area-read">
-
-    </div>
-</div>
 </body>
 
 </html>
