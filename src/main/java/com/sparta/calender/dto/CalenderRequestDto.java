@@ -2,8 +2,6 @@ package com.sparta.calender.dto;
 
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 public class CalenderRequestDto {
     private String title;
