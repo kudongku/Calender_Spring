@@ -30,7 +30,7 @@ public class CalenderService {
 
     public List<CalenderResponseDto> getCalenders() {
         return calenderRepository
-                .findAll()
+                .findAllByOrderByModifiedAtDesc()
                 .stream()
                 .map(CalenderResponseDto::new)
                 .toList();
