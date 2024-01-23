@@ -6,8 +6,8 @@ import com.sparta.calender.entity.Calender;
 import com.sparta.calender.repository.CalenderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.InputMismatchException;
 import java.util.List;
 
 
@@ -29,32 +29,36 @@ public class CalenderService {
     }
 
     public List<CalenderResponseDto> getCalenders() {
-        return calenderRepository.findAll();
+        return calenderRepository
+                .findAll()
+                .stream()
+                .map(CalenderResponseDto::new)
+                .toList();
     }
 
+    @Transactional
     public Long updateCalender(Long id, CalenderRequestDto calenderRequestDto) {
         // 해당 메모가 DB에 존재하는지 확인
-        Calender calender = calenderRepository.findById(id);
+        Calender calender = findCalender(id);
 
-        if (calender != null) {
-            calenderRepository.update(id, calenderRequestDto);
-            return id;
-        } else {
-            throw new InputMismatchException("선택한 일정은 존재하지 않습니다.");
-        }
+        calender.update(calenderRequestDto);
+        return id;
+
     }
 
     public Long deleteCalender(Long id) {
         // 해당 메모가 DB에 존재하는지 확인
-        Calender calender = calenderRepository.findById(id);
+        Calender calender = findCalender(id);
 
-        if (calender != null) {
-            calenderRepository.remove(id);
-            return id;
-        } else {
-            throw new InputMismatchException("선택한 일정은 존재하지 않습니다.");
-        }
+        calenderRepository.delete(calender);
+        return id;
+
     }
 
+    private Calender findCalender(Long id) {
+        return calenderRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("선택한 일정은 존재하지 않습니다.")
+        );
+    }
 
 }
