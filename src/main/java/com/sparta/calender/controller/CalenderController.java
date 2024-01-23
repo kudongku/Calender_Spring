@@ -25,16 +25,23 @@ public class CalenderController {
         return calenderService.getCalenders();
     }
 
+    @GetMapping("/{id}")
+    public CalenderResponseDto showCalenderDetails(@PathVariable Long id) {
+        System.out.println("컨트롤러 진입 성공, id : "+id);
+        return calenderService.showCalenderDetails(id);
+    }
+
 
     @PutMapping("/{id}")
-    public Long updateCalender(@PathVariable Long id, @RequestBody CalenderRequestDto calenderRequestDto) {
+    public boolean updateCalender(@PathVariable Long id, @RequestBody CalenderRequestDto calenderRequestDto) {
         return calenderService.updateCalender(id, calenderRequestDto);
     }
 
 
-    @DeleteMapping("/{id}")
-    public Long deleteCalender(@PathVariable Long id) {
-        return calenderService.deleteCalender(id);
+    @DeleteMapping("/{id}/{password}")
+    public boolean deleteCalender(@PathVariable Long id, String password) {
+        System.out.println("컨트롤러 진입 성공, password : "+password);
+        return calenderService.deleteCalender(id, password);
     }
 
 }

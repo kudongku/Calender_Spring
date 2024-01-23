@@ -11,7 +11,6 @@ public class CalenderResponseDto {
     private String title;
     private String content;
     private String writer;
-    private String password;
     private String date;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -21,7 +20,6 @@ public class CalenderResponseDto {
         this.title = calender.getTitle();
         this.content = calender.getContent();
         this.writer = calender.getWriter();
-        this.password = calender.getPassword();
         this.date = calender.getDate();
         this.createdAt = calender.getCreatedAt();
         this.modifiedAt = calender.getModifiedAt();
