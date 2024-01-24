@@ -1,4 +1,5 @@
 # 나만의 일정관리 앱 서버
+<img width="540" alt="image" src="https://github.com/kudongku/Calender_Spring/assets/148612321/b25be266-878f-4e67-b2f7-e2120de28e7f">
 
 ---
 
